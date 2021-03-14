@@ -23,3 +23,22 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: 'release'
+  merge-master:
+    name: Merge master -> develop
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: main
+          target-branch: release
+  delete-release-branch:
+    name: Delete release branch
+    needs: merge-master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{github.token}}
+          branches: release
