@@ -1,0 +1,28 @@
+name: Release process
+
+on:
+  push:
+      branches: [ develop ]
+jobs:
+  check-commit:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^RELEASE:*'
+          error: 'The last push of this feature is not ready to be merged with the main branch.'
+  create-release:
+    name: Create release branch
+    needs: check-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - name: Create Release
+        uses: aaiezza/create-release@master
+        id: create_release
+        with:
+          release_branch: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
