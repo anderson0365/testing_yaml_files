@@ -16,7 +16,7 @@ jobs:
     - name: Instalación de librerías y dependencias
       run: |
         python -m pip install --upgrade pip
-        pip install coverage
+        pip install -r requirements.txt
     - name: Correr pruebas
       id: correr-pruebas
       run: python -m unittest -v tests/test_model_persona.py
