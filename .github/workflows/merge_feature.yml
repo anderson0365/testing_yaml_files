@@ -4,7 +4,7 @@ on:
     branches: 
     - "feature*"
 jobs:
-  job1:
+  unittest-ok:
     name: Pruebas
     runs-on: ${{ matrix.os }}
     strategy:
@@ -29,13 +29,24 @@ jobs:
       run: |
           coverage run -m unittest tests/test_model_persona.py
           coverage report -m
+  check-commit:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^MERGE:*'
+          error: 'The last push of this feature is not ready to be merged with the develop branch.'
   automerge:
     name: Automerge
-    needs: job1
+    needs:
+      - unittest-ok
+      - check-commit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Merge staging -> uat
+      - name: merge to main
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
