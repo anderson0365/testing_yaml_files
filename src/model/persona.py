@@ -14,7 +14,7 @@ class Persona:
        self.__nombre = nombre
 
    def dar_edad(self):
-       return(self.__edad)
+       return(1)#(self.__edad)
 
    def dar_nombre(self):
        return(self.__nombre)
