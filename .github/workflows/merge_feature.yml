@@ -52,9 +52,3 @@ jobs:
           type: now
           target_branch: main
           github_token: ${{ github.token }}
-  delete-merged-branch:
-    name: Delete merged branch
-    needs: automerge
-    runs-on: ubuntu-latest
-    steps:
-      - uses: zjutszl/delete-merged-branch-asdf@master
