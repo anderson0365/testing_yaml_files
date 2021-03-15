@@ -24,7 +24,7 @@ jobs:
         with:
           branch: 'release'
   merge-master:
-    name: Merge master -> develop
+    name: Merge release -> main
     needs: create-release
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +32,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           source-branch: release
-          target-branch: master
+          target-branch: main
   delete-release-branch:
     name: Delete release branch
     needs: merge-master
