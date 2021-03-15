@@ -31,8 +31,8 @@ jobs:
       - uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: main
-          target-branch: release
+          source-branch: release
+          target-branch: master
   delete-release-branch:
     name: Delete release branch
     needs: merge-master
