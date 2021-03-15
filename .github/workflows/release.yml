@@ -18,11 +18,27 @@ jobs:
     needs: check-commit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
-      - name: Create Release
-        uses: aaiezza/create-release@master
-        id: create_release
-        with:
-          release_branch: release
+      - uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'release'
+  merge-master:
+    name: Merge release -> main
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: release
+          target-branch: main
+  delete-release-branch:
+    name: Delete release branch
+    needs: merge-master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{github.token}}
+          branches: release
